@@ -19,15 +19,22 @@ Log-based fault diagnosis is essential for maintaining software system availabil
 ## 🔍 Project Structure
 
 ```
-├─checkpoint      # Saved models
-├─data            # Log data
+├─checkpoint      # Saved models (ignored in Git, local only)
+├─data            # Log data (ignored in Git, local only)
 ├─glove           # Pre-trained Language Models for Log Embedding
-├─src             
-|  ├─dataset.py   # Load dataset
-|  ├─models.py    # Chimera Models   
-|  └─utils.py     # Log Embedding
-├─main.py         # entries
-└─process.py      # Data preprocess
+├─docs            # Documentation guides and references
+├─report_output   # Generated evaluation metrics, summaries, and plots
+├─scripts         # Automation scripts for plotting and checkpoint selection
+├─src             # Core source code
+│  ├─advanced_interaction.py   # Novelty 3: Dual-attention interaction module
+│  ├─callbacks.py              # Custom training callbacks
+│  ├─domain_adaptation.py      # Novelty 2: Domain adaptation layers
+│  ├─metrics_eval.py           # Robust metrics evaluation pipeline
+│  ├─models.py                 # Core Chimera model architectures
+│  ├─multitask_dataset.py      # Multi-task dataset loader
+│  └─multitask_expansion.py    # Novelty 1: Extended 6-task training pipeline
+├─main.py         # Entry point for training and evaluation
+└─requirements.txt # Python package dependencies
 ```
 
 ## 📑 Datasets
@@ -71,12 +78,12 @@ You need to follow these steps to **completely** run `Chimera`.
 
 
 ## 🚀 Quick Start
-you can run `Chimera` on Spirit dataset with this code:
+You can set up and run `Chimera` with the following stages:
 
 #### 👉 Stage 1: Preparing the Environment.
 
-```
-pip install -r requirement.txt
+```bash
+pip install -r requirements.txt
 ```
 
 #### 👉 Stage 1: Training Chimera.
