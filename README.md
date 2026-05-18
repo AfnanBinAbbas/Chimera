@@ -1,4 +1,4 @@
-# Chimera Core Research Engine
+# FaultGuard-AI Core Research Engine
 
 This repository contains the core research implementation and models for **FaultGuard-AI**, an end-to-end, multi-task log-based fault diagnosis platform.
 
