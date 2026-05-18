@@ -9,10 +9,18 @@ import torch
 from sklearn.metrics import ndcg_score
 
 
+def _predict_anomaly(logits, threshold):
+    if logits.ndim != 2 or logits.size(-1) < 2:
+        raise ValueError(f"Expected [batch, 2] logits, got shape {tuple(logits.shape)}")
+    anomaly_prob = torch.softmax(logits, dim=-1)[:, 1]
+    return anomaly_prob >= threshold
+
+
 def compute_ad_rca_metrics(model, n_eval_loader, an_eval_loader):
     model.eval()
     metrics = {}
     t0 = time.time()
+    threshold = float(getattr(model, "decision_threshold", 0.5))
 
     prev_log = getattr(model, "log", None)
     setattr(model, "log", lambda *args, **kwargs: None)
@@ -24,8 +32,9 @@ def compute_ad_rca_metrics(model, n_eval_loader, an_eval_loader):
             for batch in n_eval_loader:
                 _, pair = model(batch)
                 out, score, ad_label, rca_label = pair[:4]
+                preds = _predict_anomaly(out, threshold)
                 for i in range(len(out)):
-                    if out[i][1].item() >= out[i][0].item():
+                    if preds[i].item():
                         fp += 1
                     else:
                         tn += 1
@@ -33,8 +42,9 @@ def compute_ad_rca_metrics(model, n_eval_loader, an_eval_loader):
             for batch in an_eval_loader:
                 _, pair = model(batch)
                 out, score, ad_label, rca_label = pair[:4]
+                preds = _predict_anomaly(out, threshold)
                 for i in range(len(out)):
-                    if out[i][1].item() >= out[i][0].item():
+                    if preds[i].item():
                         tp += 1
                     else:
                         fn += 1
@@ -65,10 +75,11 @@ def compute_ad_rca_metrics(model, n_eval_loader, an_eval_loader):
                 for batch in an_eval_loader:
                     _, pair = model(batch)
                     out, score, ad_label, rca_label = pair[:4]
+                    preds = _predict_anomaly(out, threshold)
                     for i in range(len(out)):
                         if torch.sum(rca_label[i], dim=-1).item() > 0:
                             faults += 1
-                        if out[i][1].item() >= out[i][0].item():
+                        if preds[i].item():
                             candidates = torch.topk(score[i], topk, dim=-1).indices
                             target = rca_label[i].unsqueeze(0)
                             res = target[
@@ -95,10 +106,11 @@ def compute_ad_rca_metrics(model, n_eval_loader, an_eval_loader):
             for batch in an_eval_loader:
                 _, pair = model(batch)
                 out, score, ad_label, rca_label = pair[:4]
+                preds = _predict_anomaly(out, threshold)
                 for i in range(len(out)):
                     if torch.sum(rca_label[i], dim=-1).item() > 0:
                         faults_mrr += 1
-                    if out[i][1].item() >= out[i][0].item():
+                    if preds[i].item():
                         candidates = torch.topk(score[i], 20, dim=-1).indices
                         target = rca_label[i].unsqueeze(0)
                         res = target[

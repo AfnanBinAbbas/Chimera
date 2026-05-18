@@ -90,3 +90,52 @@ python main.py --mode train --epochs 150 --dataset BGL
 ```
 python main.py --mode eval --load_checkpoint True  --dataset BGL
 ```
+
+## 📈 Reproducibility and outputs
+
+The repository now includes a full BGL-only reproduction flow with dynamic checkpoint selection and comparison plots.
+
+### Latest test results
+
+See [TEST_RESULTS.md](TEST_RESULTS.md) for the freshly generated evaluation results, regenerated plots, and checkpoint selection output from the latest test run.
+
+### Implemented novelties
+
+See [NOVELTIES.md](NOVELTIES.md) for the full description of the three implemented novelty modules, their code locations, and the latest BGL results.
+
+### Command reference
+
+For a complete list of runnable commands, modes, and flags, see [docs/COMMANDS.md](docs/COMMANDS.md).
+
+### Training and validation
+
+`main.py` monitors validation AD F1 (`val_ad_f1`) and checkpoints the best model automatically.
+
+```bash
+python main.py --mode train --dataset BGL --epochs 150 --batch_size 256
+```
+
+### Dynamic checkpoint selection
+
+After training, evaluate all saved checkpoints and copy the best one to `checkpoint/best_model.bin`.
+
+```bash
+python scripts/select_best_checkpoint.py --dataset BGL --device cpu --batch-size 128 --checkpoint-dir checkpoint
+```
+
+### BGL comparison figures
+
+Generate the paper-vs-our-run comparison and the auxiliary-head comparison figures.
+
+```bash
+python scripts/plot_paper_comparison.py
+```
+
+Generated figures are stored under `report_output/`:
+
+- `fig_bgl_paper_vs_novelties.png`
+- `fig_bgl_novelty_auxiliary_heads.png`
+
+### Main report
+
+The complete human-readable summary lives in `report_output/PROJECT_REPORT.md`.

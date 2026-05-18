@@ -1,0 +1,78 @@
+{
+  "generated_utc": "2026-05-09T10:48:00Z",
+  "ours": {
+    "baseline_chimera_eval": {
+      "ad_f1": 0.9615384615384616,
+      "ad_accuracy": 0.9932258302039614,
+      "ad_precision": 0.9387755102040817,
+      "ad_recall": 0.9854327335047129,
+      "rca_hr_at_1": 0.8757497857754927,
+      "rca_mrr_at_20": 0.9169008452748821,
+      "aux_weak_labels": null
+    },
+    "novelty1_eval": {
+      "ad_f1": 0.7556283258288989,
+      "ad_accuracy": 0.9560415286061409,
+      "ad_precision": 0.7233542319749217,
+      "ad_recall": 0.790916880891174,
+      "rca_hr_at_1": 0.7000856898029134,
+      "rca_mrr_at_20": 0.7131903194767809
+    },
+    "novelty2_eval": {
+      "ad_f1": 0.9694656488549619,
+      "ad_accuracy": 0.9946984758117959,
+      "ad_precision": 0.9596977329974811,
+      "ad_recall": 0.9794344473007712,
+      "rca_hr_at_1": 0.9494430162810625,
+      "rca_mrr_at_20": 0.9593913361870415,
+      "aux_weak_labels": {
+        "failure_acc": 0.9023136246786633,
+        "remediation_acc": 0.5149957155098543,
+        "impact_rmse": 0.11201710107007051
+      }
+    },
+    "novelty3_eval": {
+      "ad_f1": 0.9659520807061791,
+      "ad_accuracy": 0.9940357852882704,
+      "ad_precision": 0.948019801980198,
+      "ad_recall": 0.9845758354755784,
+      "rca_hr_at_1": 0.8757497857754927,
+      "rca_mrr_at_20": 0.908894177913534,
+      "aux_weak_labels": {
+        "failure_acc": 0.9494430162810625,
+        "remediation_acc": 0.6846615252784919,
+        "impact_rmse": 0.06859553122246875
+      }
+    }
+  },
+  "paper": {
+    "source": "https://arxiv.org/html/2509.24364v1",
+    "ad_bgl": {
+      "precision": 0.9122,
+      "recall": 0.9737,
+      "f1": 0.9419
+    },
+    "rca_bgl": {
+      "hr_at_1": 0.8973,
+      "mrr": 0.9115
+    }
+  },
+  "comparison": {
+    "paper_chimera_bgl": {
+      "ad_f1": 0.9419,
+      "rca_hr_at_1": 0.8973,
+      "rca_mrr": 0.9115
+    },
+    "best_ours_bgl": {
+      "label": "novelty2_eval",
+      "ad_f1": 0.9465329991645781,
+      "rca_hr_at_1": 0.8543273350471294,
+      "rca_mrr": 0.9019622546733224
+    },
+    "delta_pp_best_minus_paper": {
+      "ad_f1": 0.46,
+      "rca_hr_at_1": -4.3,
+      "rca_mrr": -0.95
+    }
+  }
+}

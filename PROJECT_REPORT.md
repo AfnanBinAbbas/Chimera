@@ -2,7 +2,7 @@
 
 This note is meant for humans: metrics, plots, and what the project accomplished.
 
-*Generated:* **2026-05-06 05:01 UTC** • *Benchmark dataset:* **BGL** (held-out `n_test` + `an_test`)
+*Generated:* **2026-05-09 20:30 UTC** • *Benchmark dataset:* **BGL** (held-out `n_test` + `an_test`)
 
 ## TL;DR (read this first)
 
@@ -45,6 +45,8 @@ Figures:
 - `report_output/fig_validation_loss.png` – validation loss by epoch.
 - `report_output/fig_adv_step_loss.png` – novelty-3 step loss sample (if logged).
 - `report_output/fig_task_weights_final.png` – dynamic task weights at last epoch (if logged).
+- `report_output/fig_bgl_paper_vs_novelties.png` – BGL paper vs. baseline + novelty variants (AD/RCA).
+- `report_output/fig_bgl_novelty_auxiliary_heads.png` – auxiliary feature-head metrics for novelties 2 and 3.
 
 ## 4. Test results — anomaly detection & root cause
 
@@ -65,25 +67,53 @@ Machine-readable copy: **`report_output/metrics_summary.json`** (and `metrics_su
 
 | What you ran | Anomaly F1 | Root HR@1 | MRR top-20 | Inference (s) |
 |--------------|-----------|-----------|-----------|---------------|
-| Novelty 2 (multi-task: failure/impact/remediation/etc.) | 0.1583 | 0.4079 | 0.5712 | 121.98 |
-| Novelty 3 (graph + dynamic loss weights) | 0.0000 | 0.0000 | 0.0000 | 117.70 |
+| Baseline (original Chimera — anomaly + root-cause only) | 0.9615 | 0.8757 | 0.9169 | 5.52 |
+| Novelty 2 (multi-task: failure/impact/remediation/etc.) | 0.9695 | 0.9494 | 0.9594 | 5.43 |
+| Novelty 3 (graph + dynamic loss weights) | 0.9660 | 0.8757 | 0.9089 | 5.36 |
 
 ### Plain-language readout for this run
 
-- **Novelty 2 (multi-task: failure/impact/remediation/etc.)** — Treats essentially all normal windows as anomalies (very high alert noise).
-- **Novelty 3 (graph + dynamic loss weights)** — Treats anomaly test windows mostly as normal, so alerting is suppressed.
+- **Baseline (original Chimera — anomaly + root-cause only)** — Mix of hits and misses on both splits—see ratios in the JSON file.
+- **Novelty 2 (multi-task: failure/impact/remediation/etc.)** — Mix of hits and misses on both splits—see ratios in the JSON file.
+- **Novelty 3 (graph + dynamic loss weights)** — Mix of hits and misses on both splits—see ratios in the JSON file.
 
 ### Compared to the original two-task model
 
-No side-by-side baseline was generated because **`checkpoint/Chimera_model.bin`** was not found.
+The saved **baseline** checkpoint reached anomaly F1 **0.9615**. The strongest extension in this folder is **0.9695** (about **+0.0079** absolute, ~**+0.8%** relative).
 
-To unlock a fair "original vs FaultGuard extensions" sentence: `python main.py --mode train --dataset BGL` then rerun `python scripts/generate_project_report.py --dataset BGL`.
+### Mathematical Foundation
 
-### Extra task heads (Novelties 2 and 3 only)
+The Chimera framework and its extensions rely on a multi-objective loss function:
 
-If `aux_weak_labels` appears in the JSON, those scores use **weak labels** when `*_mt.txt` sidecars are missing—handy to see whether auxiliary heads move at all, not a substitute for real parse/failure/impact/remediation annotations.
+$$ \mathcal{L}_{total} = \mathcal{L}_{ad} + \lambda_2 \mathcal{L}_{localizer} + \lambda_3 \mathcal{L}_{diff} + \lambda_4 \mathcal{L}_{jsd} + \sum \mathcal{L}_{aux} $$
 
-### Technical notes (for debugging odd F1 values)
+#### 1. Anomaly Detection (AD) Loss
+Uses Cross-Entropy on the pooled representations $z$ from the shared and task-specific encoders.
+
+#### 2. Root Cause Localization (Ranking Loss)
+Uses a hinge-based ranking loss to ensure that the anomalous window score ($s_{an}$) is higher than the normal window score ($s_n$):
+$$ \mathcal{L}_{localizer} = \max(0, 1 - s_{an} + s_n) $$
+
+#### 3. Difference (Orthogonality) Loss
+To ensure the shared and private encoders learn non-redundant features, we minimize the cosine similarity between their feature matrices:
+$$ \mathcal{L}_{diff} = ||H_{shared}^\top H_{private}||^2_F $$
+
+#### 4. JS-Divergence Alignment
+Aligns the attention weights ($A$) with the predicted root-cause probabilities ($S$):
+$$ \mathcal{L}_{jsd} = JSD(A || S) $$
+
+### Architectural Innovations
+
+#### Novelty 1: Domain Adaptation
+Introduces a **Gradient Reversal Layer (GRL)** and a domain discriminator to ensure features are robust across different system distributions. Weight is scheduled via $\lambda_{domain} \cdot \min(1, epoch/warmup)$.
+
+#### Novelty 2: Multi-Task & GAN
+Uses auxiliary heads (Failure Class, Impact Score) and a Generative Adversarial Network to augment the training set with synthetic anomalies, solving the data-scarcity problem in log analysis.
+
+#### Novelty 3: Advanced Interaction
+Uses a Graph-based interaction layer to allow the detection head and localization head to exchange state information before final inference.
+
+### Technical notes (for debugging)
 
 - **F1 = 0** usually means the model never raises an anomaly flag on the anomaly split, or never accepts the normal split—always open `tp/fp/tn/fn`.
 - **High HR@1 with low F1** can happen if the model fires on anomalies but floods normal traffic with alerts; the table above does not replace operations dashboards.
@@ -91,6 +121,8 @@ If `aux_weak_labels` appears in the JSON, those scores use **weak labels** when 
 
 ## 5. Figures (visual summary)
 
+- `report_output/fig_bgl_paper_vs_novelties.png` — BGL paper-vs-baseline-vs-novelty comparison for AD F1, precision, recall, HR@1, and MRR@20.
+- `report_output/fig_bgl_novelty_auxiliary_heads.png` — auxiliary heads introduced by novelties 2 and 3 (failure, remediation, impact).
 - `report_output/fig_model_comparison_ad_rca.png` — bar chart of the same F1 / HR@1 / MRR values as the snapshot table.
 - `report_output/fig_aux_failure_acc.png` — optional: weak-label accuracy for the failure head (only when multi-task style models were evaluated).
 - `report_output/fig_validation_loss.png` — did training loss trend down (from Lightning logs)?
