@@ -1,8 +1,8 @@
-# 🔥United We Stand: Towards End-to-End Log-based Fault Diagnosisvia Interactive Multi-Task Learning (ASE 2025)
+# United We Stand: Towards End-to-End Log-based Fault Diagnosisvia Interactive Multi-Task Learning (ASE 2025)
 
 <img src="imgs/pipeline.jpg" alt="drawing" width="100%"/>
 
-This is the basic implementation of our paper in ASE 2025 (Research Track): United We Stand: Towards End-to-End Log-based Fault Diagnosisvia Interactive Multi-Task Learning
+This is the basic implementation of our paper in ASE 2025 (Research Track): United We Stand: Towards End-to-End Log-based Fault Diagnosis via Interactive Multi-Task Learning
 
 - [Chimera](#Chimera)
   
@@ -12,11 +12,11 @@ This is the basic implementation of our paper in ASE 2025 (Research Track): Unit
   + [Preparation](#preparation)
   - [Quick Start](#quick-start)
 
-## 📌 Description
+## Description
 
-Log-based fault diagnosis is essential for maintaining software system availability. However, existing fault diagnosis methods are built using a task-independent manner, which fails to bridge the gap between anomaly detection and root cause localization in terms of data form and diagnostic objectives, resulting in three major issues: 1) Diagnostic bias accumulates in the system; 2) System deployment relies on expensive monitoring data; 3) The collaborative relationship between diagnostic tasks is overlooked. Facing this problems, we propose a novel end-to-end log-based fault diagnosis method, Chimera, whose key idea is to achieve end-to-end fault diagnosis through bidirectional interaction and knowledge transfer between anomaly detection and root cause localization. Chimera is based on interactive multi-task learning, carefully designing interaction strategies between anomaly detection and root cause localization at the data, feature, and diagnostic result levels, thereby achieving both sub-tasks interactively within a unified end-to-end framework. Evaluation on two public datasets and one industrial dataset shows that Chimera outperforms existing methods in both anomaly detection and root cause localization, achieving improvements of over 2.92%~5.00% and 19.01%~37.09%, respectively. It has been successfully deployed in production, serving an industrial cloud platform.
+Log-based fault diagnosis is essential for maintaining software system availability. However, existing fault diagnsosis methods are built using a task-independent manner, which fails to bridge the gap between anomaly detection and root cause localization in terms of data form and diagnostic objectives, resulting in three major issues: 1) Diagnostic bias accumulates in the system; 2) System deployment relies on expensive monitoring data; 3) The collaborative relationship between diagnostic tasks is overlooked. Facing this problems, we propose a novel end-to-end log-based fault diagnosis method, Chimera, whose key idea is to achieve end-to-end fault diagnosis through bidirectional interaction and knowledge transfer between anomaly detection and root cause localization. Chimera is based on interactive multi-task learning, carefully designing interaction strategies between anomaly detection and root cause localization at the data, feature, and diagnostic result levels, thereby achieving both sub-tasks interactively within a unified end-to-end framework. Evaluation on two public datasets and one industrial dataset shows that Chimera outperforms existing methods in both anomaly detection and root cause localization, achieving improvements of over 2.92%~5.00% and 19.01%~37.09%, respectively. It has been successfully deployed in production, serving an industrial cloud platform.
 
-## 🔍 Project Structure
+## Project Structure
 
 ```
 ├─checkpoint      # Saved models (ignored in Git, local only)
@@ -37,7 +37,7 @@ Log-based fault diagnosis is essential for maintaining software system availabil
 └─requirements.txt # Python package dependencies
 ```
 
-## 📑 Datasets
+## Datasets
 
 We used `2` open-source log datasets for evaluation, BGL and Thunderbird. 
 
@@ -50,7 +50,7 @@ We used `2` open-source log datasets for evaluation, BGL and Thunderbird.
 **Note:** Considering the huge scale of the Thunderbird dataset, we followed the settings of the previous study [LogADEmpirical](https://github.com/LogIntelligence/LogADEmpirical) and selected the earliest 10 million log messages from the Thunderbird dataset for experimentation. 
 
 
-## ⚙️ Environment
+## Environment
 
 **Key Packages:**
 
@@ -69,7 +69,7 @@ tqdm==4.62.3
 [Drain3](https://github.com/IBM/Drain3)
 
 
-## 📜 Preparation
+## Preparation
 
 You need to follow these steps to **completely** run `Chimera`.
 - **Step 1:** Download [Log Data](#datasets) and put it under `data` folder.
@@ -77,28 +77,28 @@ You need to follow these steps to **completely** run `Chimera`.
 - **Step 3:** Download `glove.6B.300d.txt` from [Stanford NLP word embeddings](https://nlp.stanford.edu/projects/glove/), and put it under `glove` folder.
 
 
-## 🚀 Quick Start
+## Quick Start
 You can set up and run `Chimera` with the following stages:
 
-#### 👉 Stage 1: Preparing the Environment.
+#### -> Stage 1: Preparing the Environment.
 
 ```bash
 pip install -r requirements.txt
 ```
 
-#### 👉 Stage 1: Training Chimera.
+#### -> Stage 1: Training Chimera.
 
 ```
 python main.py --mode train --epochs 150 --dataset BGL
 ```
 
-#### 👉 Stage 2: Evaluation Chimera on BGL Dataset.
+#### -> Stage 2: Evaluation Chimera on BGL Dataset.
 
 ```
 python main.py --mode eval --load_checkpoint True  --dataset BGL
 ```
 
-## 📈 Reproducibility and outputs
+## Reproducibility and outputs
 
 The repository now includes a full BGL-only reproduction flow with dynamic checkpoint selection and comparison plots.
 
