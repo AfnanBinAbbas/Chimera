@@ -4,22 +4,22 @@ This document describes the implemented novelty modules in the current repositor
 
 ## Overview
 
-The repository currently implements three novelty variants on top of the baseline Chimera model, plus a unified evaluation path used for reporting:
+The repository currently implements three novelty variants on top of the baseline model, plus a unified evaluation path used for reporting:
 
-1. **Novelty 1 — Domain-adaptive Chimera**
-2. **Novelty 2 — Multi-task Chimera**
-3. **Novelty 3 — Advanced interaction Chimera**
+1. **Novelty 1 — Domain-adaptive FaultGuard-AI**
+2. **Novelty 2 — Multi-task FaultGuard-AI**
+3. **Novelty 3 — Advanced interaction FaultGuard-AI**
 4. **Unified benchmark and report generation**
 
 The active evaluation/training entrypoint is `main.py`.
 
-## Novelty 1: Domain-Adaptive Chimera
+## Novelty 1: Domain-Adaptive FaultGuard-AI
 
 ### Goal
 Improve robustness across domains by learning features that are less sensitive to domain-specific noise.
 
 ### Implemented idea
-- Domain-aware training path using a domain-adaptation variant of Chimera.
+- Domain-aware training path using a domain-adaptation variant of FaultGuard-AI.
 - Validation and evaluation are run through the same BGL split loaders as the baseline.
 
 ### Code locations
@@ -37,13 +37,13 @@ Improve robustness across domains by learning features that are less sensitive t
 - RCA HR@1: **0.7001**
 - RCA MRR@20: **0.7132**
 
-## Novelty 2: Multi-task Chimera
+## Novelty 2: Multi-task FaultGuard-AI
 
 ### Goal
 Expand the original two-task setup with extra auxiliary supervision so the shared representation can capture more structure from the log stream.
 
 ### Implemented idea
-- Auxiliary heads are added to Chimera.
+- Auxiliary heads are added to FaultGuard-AI.
 - The current code path supports weak-label style multitask training/evaluation.
 - This novelty is the strongest current run by AD F1 and is the dynamic best checkpoint selected from the saved models.
 
@@ -68,13 +68,13 @@ Expand the original two-task setup with extra auxiliary supervision so the share
 - This is the best-performing novelty in the current repository state.
 - It is also the checkpoint chosen by `scripts/select_best_checkpoint.py`.
 
-## Novelty 3: Advanced Interaction Chimera
+## Novelty 3: Advanced Interaction FaultGuard-AI
 
 ### Goal
 Make task interaction more adaptive by introducing richer coupling between the model’s diagnostic branches.
 
 ### Implemented idea
-- Dynamic interaction mechanisms are added to Chimera.
+- Dynamic interaction mechanisms are added to FaultGuard-AI.
 - The novelty is designed to change how task signals influence each other during inference/training.
 
 ### Code locations
