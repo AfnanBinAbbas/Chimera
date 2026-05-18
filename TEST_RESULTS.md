@@ -6,7 +6,7 @@ All code has been re-tested and all output artifacts have been regenerated succe
 
 ## 1. Compilation & Syntax Checks
 
-✅ **All main files pass Python syntax checks:**
+ **All main files pass Python syntax checks:**
 - `main.py`
 - `nov_1.py`
 - `src/callbacks.py`
@@ -27,7 +27,7 @@ python scripts/select_best_checkpoint.py --dataset BGL --device cpu --batch-size
 - Evaluated checkpoints:
   - `AdvancedInteractionChimera_model.bin` → AD F1 = **0.3596**
   - `Chimera_model.bin` → AD F1 = **0.6791**
-  - `MultiTaskChimera_model.bin` → AD F1 = **0.8527** ⭐ **BEST**
+  - `MultiTaskChimera_model.bin` → AD F1 = **0.8527** **BEST**
   - `DomainAdaptiveChimera_model.bin` → Skipped (unknown checkpoint format)
   - `best_model.bin` → Skipped (symlink)
 
@@ -43,13 +43,13 @@ python scripts/plot_paper_comparison.py
 ```
 
 **Generated figures:**
-- ✅ `report_output/fig_bgl_paper_vs_novelties.png` (92 KB) — Paper vs. baseline vs. novelties comparison
-- ✅ `report_output/fig_bgl_novelty_auxiliary_heads.png` (49 KB) — Auxiliary task metrics for novelties 2 & 3
+- `report_output/fig_bgl_paper_vs_novelties.png` (92 KB) — Paper vs. baseline vs. novelties comparison
+- `report_output/fig_bgl_novelty_auxiliary_heads.png` (49 KB) — Auxiliary task metrics for novelties 2 & 3
 
 **Generated during report:** Additional figures from Lightning metrics:
-- ✅ `report_output/fig_validation_loss.png` (90 KB)
-- ✅ `report_output/fig_model_comparison_ad_rca.png` (81 KB)
-- ✅ `report_output/fig_aux_failure_acc.png` (56 KB)
+- `report_output/fig_validation_loss.png` (90 KB)
+- `report_output/fig_model_comparison_ad_rca.png` (81 KB)
+- `report_output/fig_aux_failure_acc.png` (56 KB)
 
 ## 4. Project Report Regeneration
 
@@ -59,11 +59,11 @@ python scripts/generate_project_report.py --dataset BGL --device cpu --batch-siz
 ```
 
 **Generated/refreshed artifacts:**
-- ✅ `report_output/PROJECT_REPORT.md` (6.9 KB) — Human-readable summary report
-- ✅ `PROJECT_REPORT.md` (copy at repo root)
-- ✅ `report_output/metrics_summary.json` (3.9 KB) — JSON summary of all evaluations
-- ✅ `report_output/metrics_summary_flat.csv` (2.2 KB) — Flat CSV format
-- ✅ `report_output/lightning_metrics_concat.csv` (10 KB) — Concatenated training metrics from Lightning logs
+- `report_output/PROJECT_REPORT.md` (6.9 KB) — Human-readable summary report
+- `PROJECT_REPORT.md` (copy at repo root)
+- `report_output/metrics_summary.json` (3.9 KB) — JSON summary of all evaluations
+- `report_output/metrics_summary_flat.csv` (2.2 KB) — Flat CSV format
+- `report_output/lightning_metrics_concat.csv` (10 KB) — Concatenated training metrics from Lightning logs
 
 ## 5. Fresh Evaluation Results on BGL Dataset
 
@@ -99,7 +99,7 @@ All evaluations loaded saved checkpoints and ran inference on the BGL test split
 | RCA MRR@20 | 0.7279 |
 | Inference Time | 9.12s |
 
-### Novelty 2: MultiTask Expansion (Best) ⭐
+### Novelty 2: MultiTask Expansion (Best) 
 
 **Command:** `python main.py --mode novelty2_eval --dataset BGL --load_checkpoint True`
 
@@ -149,23 +149,23 @@ All evaluations loaded saved checkpoints and ran inference on the BGL test split
 
 ## 7. Documentation Generated
 
-✅ **Command Reference:** [docs/COMMANDS.md](docs/COMMANDS.md)
+ **Command Reference:** [docs/COMMANDS.md](docs/COMMANDS.md)
 - Lists all available modes, entrypoints, and flags
 - Provides example commands for training, evaluation, and utility scripts
 - Shows recommended end-to-end workflow
 
-✅ **Results & Reproduction Guide:** [docs/RESULTS_AND_REPRODUCTION.md](docs/RESULTS_AND_REPRODUCTION.md)
+ **Results & Reproduction Guide:** [docs/RESULTS_AND_REPRODUCTION.md](docs/RESULTS_AND_REPRODUCTION.md)
 - Current best BGL metrics
 - Full reproduction steps
 - Checkpoint selection and dynamic model behavior
 - Notes on avoiding overfit/underfit
 
-✅ **Project Report:** [report_output/PROJECT_REPORT.md](report_output/PROJECT_REPORT.md)
+ **Project Report:** [report_output/PROJECT_REPORT.md](report_output/PROJECT_REPORT.md)
 - Executive summary of all evaluations
 - Generated figures and their interpretation
 - Final workflow appendices describing dynamic checkpointing and dynamic selection
 
-✅ **README:** [README.md](README.md)
+ **README:** [README.md](README.md)
 - Quick-start commands
 - Link to full command reference
 - Reproducibility section with output paths
@@ -174,14 +174,14 @@ All evaluations loaded saved checkpoints and ran inference on the BGL test split
 
 | Component | Status | Outcome |
 |-----------|--------|---------|
-| Code compilation | ✅ PASS | All files compile without errors |
-| Checkpoint selection | ✅ PASS | Best checkpoint identified (MultiTaskChimera, F1=0.8527) |
-| Figure generation | ✅ PASS | All 6 plots regenerated successfully |
-| Report generation | ✅ PASS | PROJECT_REPORT.md and metrics CSVs refreshed |
-| Baseline evaluation | ✅ PASS | Metrics: AD F1=0.4730, RCA HR@1=0.6787 |
-| Novelty 1 evaluation | ✅ PASS | Metrics: AD F1=0.7332, RCA HR@1=0.7129 |
-| Novelty 2 evaluation | ✅ PASS | Metrics: AD F1=0.8509, RCA HR@1=0.8226 |
-| Novelty 3 evaluation | ✅ PASS | Metrics: AD F1=0.4021, RCA HR@1=0.7695 |
+| Code compilation | PASS | All files compile without errors |
+| Checkpoint selection | PASS | Best checkpoint identified (MultiTaskChimera, F1=0.8527) |
+| Figure generation | PASS | All 6 plots regenerated successfully |
+| Report generation | PASS | PROJECT_REPORT.md and metrics CSVs refreshed |
+| Baseline evaluation | PASS | Metrics: AD F1=0.4730, RCA HR@1=0.6787 |
+| Novelty 1 evaluation | PASS | Metrics: AD F1=0.7332, RCA HR@1=0.7129 |
+| Novelty 2 evaluation | PASS | Metrics: AD F1=0.8509, RCA HR@1=0.8226 |
+| Novelty 3 evaluation | PASS | Metrics: AD F1=0.4021, RCA HR@1=0.7695 |
 
 ## 9. Key Artifacts Generated
 
@@ -206,7 +206,7 @@ All outputs stored in `report_output/` with timestamps as of May 9, 2026:
 
 ## Conclusion
 
-✅ **All tests passed.** The repository is fully functional with:
+ **All tests passed.** The repository is fully functional with:
 - Fresh evaluation results for all model variants
 - Dynamic best-checkpoint selection working correctly (Novelty 2 selected)
 - All plots and reports regenerated with current data
